@@ -17,10 +17,6 @@ const findLessonById = async (id) => {
 
 const insertLesson = async (lesson) => {
   const db = getDB();
-  //   const result = await db.collection("lessons").insertOne(lesson);
-  //   console.log("result: ", result);
-  //   return result;
-
   // Insert the lesson and retrieve the insertedId
   const result = await db.collection("lessons").insertOne(lesson);
 
