@@ -31,6 +31,8 @@ const getLessonById = async (req, res) => {
 
 const createLesson = async (req, res) => {
   try {
+    console.log("in here: ", req.body);
+
     const newLesson = await insertLesson(req.body);
     res.status(201).json({ success: true, data: newLesson });
   } catch (error) {

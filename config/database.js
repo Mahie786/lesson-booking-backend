@@ -12,7 +12,7 @@ const connectDB = async () => {
     console.log("MongoDB Connected...");
 
     // Return the database instance
-    const db = client.db(); // Use default database from connection URI
+    db = client.db(); // Use default database from connection URI
     return db;
   } catch (err) {
     console.error("Error connecting to MongoDB:", err.message);
