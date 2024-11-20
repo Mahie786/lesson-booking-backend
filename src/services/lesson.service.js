@@ -27,36 +27,48 @@ const insertLesson = async (lesson) => {
   return insertedLesson;
 };
 
-// const modifyLesson = async (id, updates) => {
-//   const db = getDB();
-//   const objectId = ObjectId.isValid(id)
-//     ? ObjectId.createFromHexString(id)
-//     : null;
-//   if (!objectId) throw new Error("Invalid ObjectId format");
-//   const result = await db
-//     .collection("lessons")
-//     .findOneAndUpdate(
-//       { _id: objectId },
-//       { $set: updates },
-//       { returnDocument: "after" }
-//     );
-//   return result.value;
-// };
+const searchedLessons = async (searchString = "") => {
+  try {
+    const db = getDB();
+    const lessons = db.collection("lessons");
 
-// const removeLesson = async (id) => {
-//   const db = getDB();
-//   const objectId = ObjectId.isValid(id)
-//     ? ObjectId.createFromHexString(id)
-//     : null;
-//   if (!objectId) throw new Error("Invalid ObjectId format");
-//   const result = await db.collection("lessons").deleteOne({ _id: objectId });
-//   return result.deletedCount > 0;
-// };
+    const searchRegex = new RegExp(searchString, "i"); // 'i' for case-insensitive
+    const query = {
+      $or: [
+        { topic: { $regex: searchRegex } },
+        { price: { $regex: searchRegex } },
+        { location: { $regex: searchRegex } },
+        { space: { $regex: searchRegex } },
+      ],
+    };
+
+    const results = await lessons.find(query).toArray();
+    return results;
+  } catch (error) {
+    console.error("Error searching lessons:", error);
+  }
+};
+
+const modifyLesson = async (id, updates) => {
+  const db = getDB();
+  const objectId = ObjectId.isValid(id)
+    ? ObjectId.createFromHexString(id)
+    : null;
+  if (!objectId) throw new Error("Invalid ObjectId format");
+  const result = await db
+    .collection("lessons")
+    .findOneAndUpdate(
+      { _id: objectId },
+      { $set: updates },
+      { returnDocument: "after" }
+    );
+  return result;
+};
 
 module.exports = {
   findLessons,
   findLessonById,
   insertLesson,
-  //   modifyLesson,
-  //   removeLesson,
+  searchedLessons,
+  modifyLesson,
 };
