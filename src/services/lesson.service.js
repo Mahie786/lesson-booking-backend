@@ -36,9 +36,10 @@ const searchedLessons = async (searchString = "") => {
     const query = {
       $or: [
         { subject: { $regex: searchRegex } },
-        { price: { $regex: searchRegex } },
         { location: { $regex: searchRegex } },
-        { spaces: { $regex: searchRegex } },
+        // For Numbers
+        { price: { $eq: Number(searchString) || NaN } },
+        { spaces: { $eq: Number(searchString) || NaN } },
       ],
     };
 
