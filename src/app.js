@@ -6,10 +6,13 @@ const { connectDB } = require("../config/database");
 const lessonRoutes = require("./routes/lesson.route");
 const orderRoutes = require("./routes/order.route");
 const logger = require("./middlewares/logger");
+const cors = require("cors");
 dotenv.config();
 
 const app = express();
 app.use(express.json());
+
+app.use(cors()); // Enable all CORS requests
 
 (async () => {
   const db = await connectDB();
