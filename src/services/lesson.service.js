@@ -35,10 +35,10 @@ const searchedLessons = async (searchString = "") => {
     const searchRegex = new RegExp(searchString, "i"); // 'i' for case-insensitive
     const query = {
       $or: [
-        { topic: { $regex: searchRegex } },
+        { subject: { $regex: searchRegex } },
         { price: { $regex: searchRegex } },
         { location: { $regex: searchRegex } },
-        { space: { $regex: searchRegex } },
+        { spaces: { $regex: searchRegex } },
       ],
     };
 
