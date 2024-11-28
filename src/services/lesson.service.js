@@ -1,13 +1,17 @@
+// Import database connection and MongoDB ObjectId
 const { getDB } = require("../../config/database");
 const { ObjectId } = require("mongodb");
 
+// Function to retrieve all lessons
 const findLessons = async () => {
   const db = getDB();
   return await db.collection("lessons").find().toArray();
 };
 
+// Function to find a lesson by its ID
 const findLessonById = async (id) => {
   const db = getDB();
+  // Validate and create ObjectId from the given id
   const objectId = ObjectId.isValid(id)
     ? ObjectId.createFromHexString(id)
     : null;
@@ -15,6 +19,7 @@ const findLessonById = async (id) => {
   return await db.collection("lessons").findOne({ _id: objectId });
 };
 
+// Function to insert a new lesson
 const insertLesson = async (lesson) => {
   const db = getDB();
   // Insert the lesson and retrieve the insertedId
@@ -27,12 +32,14 @@ const insertLesson = async (lesson) => {
   return insertedLesson;
 };
 
+// Function to search lessons based on a search string
 const searchedLessons = async (searchString = "") => {
   try {
     const db = getDB();
     const lessons = db.collection("lessons");
 
     const searchRegex = new RegExp(searchString, "i"); // 'i' for case-insensitive
+    // Construct query to search across multiple fields
     const query = {
       $or: [
         { subject: { $regex: searchRegex } },
@@ -50,8 +57,10 @@ const searchedLessons = async (searchString = "") => {
   }
 };
 
+// Function to modify an existing lesson
 const modifyLesson = async (id, updates) => {
   const db = getDB();
+  // Validate and create ObjectId from the given id
   const objectId = ObjectId.isValid(id)
     ? ObjectId.createFromHexString(id)
     : null;
@@ -66,6 +75,7 @@ const modifyLesson = async (id, updates) => {
   return result;
 };
 
+// Export all functions for use in other parts of the application
 module.exports = {
   findLessons,
   findLessonById,
